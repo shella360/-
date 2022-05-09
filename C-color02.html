@@ -222,7 +222,7 @@
     }
 </script>
 <script>
-    let time = 60;
+    let time = 30;
     let timeS = document.querySelector('.time');
     let star_btn = document.querySelector('.star-btn');
     let stop_btn = document.querySelector('.stop-btn');
@@ -256,14 +256,14 @@
         homepage.classList.add('none');
         play_game.classList.remove('none');
         star_btn.innerHTML = 'Try again';
-        time = 60;
+        time = 30;
         timeS.innerHTML = time;
         level = 2;
+        level++;
         scoreV = 0;
         game();
-        level++;
         countdown();
-        alert('將從60秒開始計時！');
+        alert('將從30秒開始計時！');
     });
     stop_btn.addEventListener('click', function () {
         h.innerHTML = `還要再玩嗎?`;
