@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C-color-02</title>
+    <link rel="shortcut icon" href="./homepicture.jpg">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: rgb(243, 166, 158);
+            margin: 0px;
+        }
+
+        .homepage {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .btn {
+            position: absolute;
+            left: 10%;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            justify-content: space-evenly;
+        }
+
+        h1 {
+            margin: 0px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            /* animation: name duration timing-function delay iteration-count direction fill-mode; */
+            animation: fly 2s linear 0s infinite forwards alternate ;
+        }
+        .BigBox {
+            /* border: 1px solid; */
+            position: relative;
+            height: 100px;
+        }
+        @keyframes fly {
+            50% {
+                top: 0%;
+            }
+            100% {
+                top:80%;
+            }
+        }
+    </style>
+    <style>
+        .time-area,
+        .score-area {
+            display: flex;
+            align-items: center;
+            width: 130px;
+            height: 80px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 30px;
+        }
+
+        .score-area {
+            position: absolute;
+            right: 10%;
+        }
+
+        .time,
+        .score {
+            margin: 0 auto;
+        }
+
+        .play-game {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        nav {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            height: 100vh;
+            align-items: center;
+        }
+
+        .all {
+            background-color: pink;
+            width: 500px;
+            height: 500px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 30px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .box {
+            height: 50%;
+            width: 50%;
+            border: solid 3px pink;
+            border-radius: 15px;
+        }
+
+        .none {
+            display: none;
+        }
+
+        .block {
+            display: block;
+        }
+
+        button {
+            width: 150px;
+            height: 80px;
+            background-color: darkorange;
+            color: rgb(253, 216, 7);
+            border: none;
+            font-size: 30px;
+            font-weight: bolder;
+            border-radius: 30px;
+        }
+
+        .dashed {
+            border: dashed 3px rgb(255, 63, 63);
+        }
+    </style>
+</head>
+
+<body>
+    <section class="homepage">
+        <div class="btn">
+            <button class="star-btn">start</button>
+            <button class="continue-btn none">continue</button>
+        </div>
+        <div>
+            <div class="BigBox">
+                <h1>色弱遊戲</h1>
+            </div>
+            <img class="pic" src="./homepicture.jpg" alt="">
+            <!-- <img src="./sticker@2x.png" alt=""> -->
+        </div>
+        <div class="score-area none">
+            共得<div class="score"></div>分
+        </div>
+
+    </section>
+    <section class="play-game none">
+        <nav>
+            <div class="time-area">
+                倒數:<div class="time"></div>S
+            </div>
+            <div class="score-area">
+                得分:<div class="score"></div>分
+            </div>
+            <button class="stop-btn">stop</button>
+            <button class="tip">Tip</button>
+        </nav>
+        <div class="all"></div>
+    </section>
+</body>
+<script>
+    const c = 256;
+    let level = 2;
+    let size;
+    let color;
+    const all = document.querySelector('.all');
+    let scoreAll = document.querySelectorAll('.score');
+    console.log(scoreAll);
+    let score = document.querySelector('.score');
+    console.log(score);
+    let count = 0;
+    let scoreV = 0;
+    let tip = document.querySelector('.tip');
+
+    game();
+    function game() {
+        let size = 100 / level;
+        let color = `rgb(${Math.floor(Math.random() * c)},${Math.floor(Math.random() * c)},${Math.floor(Math.random() * c)})`;
+        // let answer = Math.floor(Math.random() * level ** 2);
+        all.innerHTML = '';
+        for (let i = 0; i < level ** 2; i++) {
+            all.innerHTML += ` <div class="box" style="width:${size}%;height:${size}%;background-color:${color};"></div>`;
+        }
+        let answer = Math.floor(Math.random() * level ** 2) + 1;
+        let answerBox = document.querySelector(`.all .box:nth-child(${answer})`);
+        answerBox.style.opacity = `${0.5 + level * 0.01}`;
+        tip.addEventListener('click', function () {
+            answerBox.classList.add('dashed');
+        })
+        answerBox.addEventListener('click', function () {
+            game();
+            count++;
+            scoreV++;
+            if (count == level) {
+                level++;
+                count = 0;
+            }
+            scoreAll.forEach(function scoreAll(score) {
+                score.innerHTML = scoreV;
+            })
+        });
+
+
+    }
+</script>
+<script>
+    let time = 10;
+    let timeS = document.querySelector('.time');
+    let star_btn = document.querySelector('.star-btn');
+    let stop_btn = document.querySelector('.stop-btn');
+    let continue_btn = document.querySelector('.continue-btn');
+    let homepage = document.querySelector('.homepage');
+    let play_game = document.querySelector('.play-game');
+    let timeID;
+    let pic = document.querySelector('.pic');
+    let h = document.querySelector('h1');
+    let score_area = document.querySelector('.score-area');
+    function countdown() {
+        clearInterval(timeID);
+        timeID = setInterval(function () {
+            if (time == 0) {
+                alert('Times Up');
+                star_btn.innerHTML = 'Play again';
+                homepage.classList.remove('none');
+                play_game.classList.add('none');
+                continue_btn.classList.add('none');
+                pic.src = `./sticker@2x.png`;
+                h.innerHTML = `Congratulations!`;
+                score_area.classList.remove('none')
+                clearInterval(timeID);
+            } else {
+                time--;
+                timeS.innerHTML = time;
+            }
+        }, 1000);
+    }
+    star_btn.addEventListener('click', function () {
+        homepage.classList.add('none');
+        play_game.classList.remove('none');
+        star_btn.innerHTML = 'Try again';
+        time = 10;
+        timeS.innerHTML = time;
+        level = 2;
+        scoreV = 0;
+        game();
+        level++;
+        countdown();
+        alert('將從60秒開始計時！');
+    });
+    stop_btn.addEventListener('click', function () {
+        h.innerHTML = `還要再玩嗎?`;
+        homepage.classList.remove('none');
+        play_game.classList.add('none');
+        continue_btn.classList.remove('none');
+        score_area.classList.add('none');
+        clearInterval(timeID);
+        pic.src = `./homepicture.jpg`;
+    });
+    continue_btn.addEventListener('click', function () {
+        homepage.classList.add('none');
+        play_game.classList.remove('none');
+        countdown();
+    });
+
+
+
+</script>
+
+</html>
